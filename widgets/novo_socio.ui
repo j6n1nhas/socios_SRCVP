@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>janela_novoSocio</class>
+ <widget class="QWidget" name="janela_novoSocio">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>928</width>
+    <height>854</height>
+   </rect>
+  </property>
+  <property name="font">
+   <font>
+    <pointsize>14</pointsize>
+   </font>
+  </property>
+  <property name="focusPolicy">
+   <enum>Qt::TabFocus</enum>
+  </property>
+  <property name="contextMenuPolicy">
+   <enum>Qt::DefaultContextMenu</enum>
+  </property>
+  <property name="windowTitle">
+   <string>Novo sócio - SRCVP</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>../icons/plus.png</normaloff>../icons/plus.png</iconset>
+  </property>
+  <property name="locale">
+   <locale language="Portuguese" country="Portugal"/>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="spacing">
+    <number>15</number>
+   </property>
+   <item>
+    <widget class="QLabel" name="label_titulo">
+     <property name="font">
+      <font>
+       <pointsize>20</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>Novo sócio</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+     <property name="margin">
+      <number>15</number>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QFormLayout" name="formLayout">
+     <property name="rowWrapPolicy">
+      <enum>QFormLayout::DontWrapRows</enum>
+     </property>
+     <property name="labelAlignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+     <property name="horizontalSpacing">
+      <number>10</number>
+     </property>
+     <property name="verticalSpacing">
+      <number>20</number>
+     </property>
+     <property name="leftMargin">
+      <number>20</number>
+     </property>
+     <property name="topMargin">
+      <number>20</number>
+     </property>
+     <property name="rightMargin">
+      <number>20</number>
+     </property>
+     <property name="bottomMargin">
+      <number>20</number>
+     </property>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_nome">
+       <property name="text">
+        <string>Nome: </string>
+       </property>
+       <property name="buddy">
+        <cstring>lineE_nome</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="label_morada">
+       <property name="text">
+        <string>Morada: </string>
+       </property>
+       <property name="buddy">
+        <cstring>lineE_morada</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QLineEdit" name="lineE_morada"/>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="label_localidade">
+       <property name="text">
+        <string>Localidade: </string>
+       </property>
+       <property name="buddy">
+        <cstring>lineE_localidade</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QLineEdit" name="lineE_localidade"/>
+     </item>
+     <item row="4" column="0">
+      <widget class="QLabel" name="label_contacto">
+       <property name="text">
+        <string>Contacto: </string>
+       </property>
+       <property name="buddy">
+        <cstring>lineE_contacto</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="1">
+      <widget class="QLineEdit" name="lineE_contacto"/>
+     </item>
+     <item row="5" column="0">
+      <widget class="QLabel" name="label_nif">
+       <property name="text">
+        <string>NIF: </string>
+       </property>
+       <property name="buddy">
+        <cstring>lineE_nif</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="1">
+      <widget class="QLineEdit" name="lineE_nif"/>
+     </item>
+     <item row="6" column="0">
+      <widget class="QLabel" name="label_dataAdmicao">
+       <property name="text">
+        <string>Data de admissão: </string>
+       </property>
+       <property name="buddy">
+        <cstring>calendarWidget</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="1">
+      <widget class="QCalendarWidget" name="calendarWidget"/>
+     </item>
+     <item row="7" column="0">
+      <widget class="QLabel" name="label_notas">
+       <property name="text">
+        <string>Notas / Observações: </string>
+       </property>
+       <property name="buddy">
+        <cstring>textE_notas</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="7" column="1">
+      <widget class="QTextEdit" name="textE_notas"/>
+     </item>
+     <item row="9" column="1">
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <property name="spacing">
+        <number>50</number>
+       </property>
+       <property name="sizeConstraint">
+        <enum>QLayout::SetDefaultConstraint</enum>
+       </property>
+       <item>
+        <widget class="QComboBox" name="comboB_cota">
+         <property name="toolTip">
+          <string>Escolha a cota...</string>
+         </property>
+         <property name="statusTip">
+          <string>Escolher a cota para o sócio</string>
+         </property>
+         <property name="currentText">
+          <string/>
+         </property>
+         <property name="maxVisibleItems">
+          <number>5</number>
+         </property>
+         <property name="maxCount">
+          <number>10</number>
+         </property>
+         <property name="insertPolicy">
+          <enum>QComboBox::NoInsert</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="checkB_ativo">
+         <property name="text">
+          <string>Sócio ativo ?</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_numero">
+       <property name="text">
+        <string>Número: </string>
+       </property>
+       <property name="buddy">
+        <cstring>spinB_numero</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QLineEdit" name="lineE_nome"/>
+     </item>
+     <item row="0" column="1">
+      <widget class="QSpinBox" name="spinB_numero">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Save</set>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <tabstops>
+  <tabstop>lineE_nome</tabstop>
+  <tabstop>lineE_morada</tabstop>
+  <tabstop>lineE_localidade</tabstop>
+  <tabstop>lineE_contacto</tabstop>
+  <tabstop>lineE_nif</tabstop>
+  <tabstop>calendarWidget</tabstop>
+  <tabstop>textE_notas</tabstop>
+  <tabstop>comboB_cota</tabstop>
+  <tabstop>checkB_ativo</tabstop>
+  <tabstop>spinB_numero</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>

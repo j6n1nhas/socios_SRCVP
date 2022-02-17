@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <author>João Ramos</author>
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>894</width>
+    <height>838</height>
+   </rect>
+  </property>
+  <property name="font">
+   <font>
+    <pointsize>14</pointsize>
+   </font>
+  </property>
+  <property name="windowTitle">
+   <string>Sociedade Recreativa e Cultural de Vale da Pinta</string>
+  </property>
+  <property name="locale">
+   <locale language="Portuguese" country="Portugal"/>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QStackedWidget" name="stackedWidget">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Plain</enum>
+      </property>
+      <property name="lineWidth">
+       <number>0</number>
+      </property>
+      <property name="midLineWidth">
+       <number>0</number>
+      </property>
+      <property name="currentIndex">
+       <number>2</number>
+      </property>
+      <widget class="QWidget" name="page_main">
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <item>
+         <layout class="QGridLayout" name="gridLayout">
+          <property name="leftMargin">
+           <number>50</number>
+          </property>
+          <property name="topMargin">
+           <number>50</number>
+          </property>
+          <property name="rightMargin">
+           <number>50</number>
+          </property>
+          <property name="bottomMargin">
+           <number>50</number>
+          </property>
+          <property name="spacing">
+           <number>20</number>
+          </property>
+          <item row="0" column="0">
+           <widget class="QPushButton" name="pushB_novoSocio">
+            <property name="font">
+             <font>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="toolTip">
+             <string>Criar novo sócio</string>
+            </property>
+            <property name="statusTip">
+             <string>Registar novo sócio</string>
+            </property>
+            <property name="text">
+             <string>Novo sócio</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <normaloff>../icons/plus.png</normaloff>../icons/plus.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>32</width>
+              <height>32</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QPushButton" name="pushB_graficos">
+            <property name="font">
+             <font>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="toolTip">
+             <string>Obter gráficos</string>
+            </property>
+            <property name="statusTip">
+             <string>Obter gráficos diversos</string>
+            </property>
+            <property name="text">
+             <string>Gráficos</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <normaloff>../icons/graph.png</normaloff>../icons/graph.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>32</width>
+              <height>32</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QPushButton" name="pushB_listagens">
+            <property name="font">
+             <font>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="toolTip">
+             <string>Obter listagens</string>
+            </property>
+            <property name="statusTip">
+             <string>Obter listagens diversas</string>
+            </property>
+            <property name="text">
+             <string>Listagens</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <normaloff>../icons/list.png</normaloff>../icons/list.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>32</width>
+              <height>32</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QPushButton" name="pushB_pagarCotas">
+            <property name="font">
+             <font>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="toolTip">
+             <string>Pagar cotas</string>
+            </property>
+            <property name="statusTip">
+             <string>Registar pagamentos de cotas</string>
+            </property>
+            <property name="text">
+             <string>Pagar cotas</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <normaloff>../icons/money.png</normaloff>../icons/money.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>32</width>
+              <height>32</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="page_estatisticas"/>
+      <widget class="QWidget" name="page_listagens">
+       <layout class="QVBoxLayout" name="verticalLayout_3">
+        <item>
+         <widget class="QSplitter" name="splitter">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <widget class="QLabel" name="label_filtroListagens">
+           <property name="text">
+            <string>Filtro</string>
+           </property>
+          </widget>
+          <widget class="QLineEdit" name="lineE_filtroSocios"/>
+         </widget>
+        </item>
+        <item>
+         <widget class="QTableView" name="tableV_listaSocios"/>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>894</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menu_ficheiro">
+    <property name="title">
+     <string>&amp;Ficheiro</string>
+    </property>
+    <widget class="QMenu" name="menu_carregarBaseDeDados">
+     <property name="title">
+      <string>Carregar base de dados</string>
+     </property>
+     <addaction name="action_deFicheiro"/>
+     <addaction name="action_outraFonte"/>
+    </widget>
+    <addaction name="menu_carregarBaseDeDados"/>
+    <addaction name="action_fecharBaseDeDados"/>
+    <addaction name="separator"/>
+    <addaction name="action_sair"/>
+   </widget>
+   <widget class="QMenu" name="menu_dados">
+    <property name="title">
+     <string>&amp;Dados</string>
+    </property>
+    <addaction name="action_InserirNovoSocio"/>
+    <addaction name="action_editarDadosDeSocio"/>
+   </widget>
+   <widget class="QMenu" name="menu_estatisticas">
+    <property name="title">
+     <string>&amp;Estatísticas</string>
+    </property>
+    <addaction name="action_graficosEHistogramas"/>
+    <addaction name="action_listagens"/>
+   </widget>
+   <widget class="QMenu" name="menu_ajuda">
+    <property name="title">
+     <string>&amp;Ajuda</string>
+    </property>
+    <addaction name="action_comoInserirNovoSocio"/>
+    <addaction name="separator"/>
+    <addaction name="action_sobre"/>
+   </widget>
+   <addaction name="menu_ficheiro"/>
+   <addaction name="menu_dados"/>
+   <addaction name="menu_estatisticas"/>
+   <addaction name="menu_ajuda"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="action_fecharBaseDeDados">
+   <property name="text">
+    <string>Fechar base de dados</string>
+   </property>
+  </action>
+  <action name="action_sair">
+   <property name="text">
+    <string>&amp;Sair</string>
+   </property>
+  </action>
+  <action name="action_InserirNovoSocio">
+   <property name="icon">
+    <iconset>
+     <normaloff>../icons/plus.png</normaloff>../icons/plus.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Inserir novo sócio</string>
+   </property>
+   <property name="statusTip">
+    <string>Registar novo sócio</string>
+   </property>
+  </action>
+  <action name="action_editarDadosDeSocio">
+   <property name="icon">
+    <iconset>
+     <normaloff>../icons/edit.png</normaloff>../icons/edit.png</iconset>
+   </property>
+   <property name="text">
+    <string>Editar dados de sócio</string>
+   </property>
+   <property name="statusTip">
+    <string>Editar ficha de sócio</string>
+   </property>
+  </action>
+  <action name="action_deFicheiro">
+   <property name="text">
+    <string>De ficheiro...</string>
+   </property>
+  </action>
+  <action name="action_outraFonte">
+   <property name="text">
+    <string>Outra fonte...</string>
+   </property>
+  </action>
+  <action name="action_comoInserirNovoSocio">
+   <property name="text">
+    <string>Como inserir novo sócio</string>
+   </property>
+  </action>
+  <action name="action_sobre">
+   <property name="text">
+    <string>Sobre...</string>
+   </property>
+  </action>
+  <action name="action_graficosEHistogramas">
+   <property name="text">
+    <string>Gráficos e histogramas</string>
+   </property>
+  </action>
+  <action name="action_listagens">
+   <property name="text">
+    <string>Listagens</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

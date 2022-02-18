@@ -89,7 +89,7 @@ class Ui_janela_novoSocio(QDialog):
                     break
                 else:
                     self.spinB_numero.setStyleSheet("background-color: white;")
-                    self.setToolTip("")
+                    self.spinB_numero.setToolTip("")
         else:
             self.spinB_numero.setStyleSheet("background-color: white;")
             query = QSqlQuery("SELECT seq FROM sqlite_sequence WHERE name='Socio'", self.db)
@@ -167,7 +167,6 @@ class Ui_janela_novoSocio(QDialog):
         self.label_localidade.setObjectName(u"label_localidade")
         self.lineE_localidade = QLineEdit(janela_novoSocio)
         self.lineE_localidade.setObjectName(u"lineE_localidade")
-
         self.formLayout.setWidget(3, QFormLayout.LabelRole, self.label_localidade)
         self.formLayout.setWidget(3, QFormLayout.FieldRole, self.lineE_localidade)
 
@@ -274,11 +273,11 @@ class Ui_janela_novoSocio(QDialog):
     def preencher_dados_socio(self):
         self.spinB_numero.setValue(self.socio['id'])
         self.lineE_nome.setText(self.socio['nome'])
-        self.lineE_morada.setText(self.socio['morada'])
-        self.lineE_localidade.setText(self.socio['localidade'])
-        self.lineE_nif.setText(self.socio['nif'])
-        self.lineE_contacto.setText(self.socio['contacto'])
-        self.calendarWidget.selectedDate().fromString(self.socio['data_admissao'], "%d/%m/%Y")
+        self.lineE_morada.setText(self.socio['morada'] or "")
+        self.lineE_localidade.setText(self.socio['localidade'] or "")
+        self.lineE_nif.setText(self.socio['nif'] or "")
+        self.lineE_contacto.setText(self.socio['contacto'] or "")
+        #self.calendarWidget.selectedDate().fromString(self.socio['data_admissao'], "%d/%m/%Y")
 
     def save_database(self):
         query = QSqlQuery(db=self.db)

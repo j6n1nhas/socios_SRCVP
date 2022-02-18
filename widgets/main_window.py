@@ -19,7 +19,7 @@ from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
 from PySide6.QtWidgets import (QApplication, QFrame, QGridLayout, QHeaderView,
     QLabel, QLineEdit, QMainWindow, QMenu,
     QMenuBar, QPushButton, QSizePolicy, QSplitter,
-    QStackedWidget, QStatusBar, QTableView, QVBoxLayout,
+    QStackedWidget, QStatusBar, QTableView, QVBoxLayout, QHBoxLayout,
     QWidget)
 
 
@@ -62,6 +62,7 @@ class Ui_MainWindow(object):
         self.centralwidget.setObjectName(u"centralwidget")
         self.verticalLayout = QVBoxLayout(self.centralwidget)
         self.verticalLayout.setObjectName(u"verticalLayout")
+
         self.stackedWidget = QStackedWidget(self.centralwidget)
         self.stackedWidget.setObjectName(u"stackedWidget")
         self.stackedWidget.setEnabled(True)
@@ -124,6 +125,7 @@ class Ui_MainWindow(object):
         self.page_estatisticas = QWidget()
         self.page_estatisticas.setObjectName(u"page_estatisticas")
         self.stackedWidget.addWidget(self.page_estatisticas)
+
         self.page_listagens = QWidget()
         self.page_listagens.setObjectName(u"page_listagens")
         self.verticalLayout_3 = QVBoxLayout(self.page_listagens)
@@ -142,8 +144,9 @@ class Ui_MainWindow(object):
 
         self.tableV_listaSocios = QTableView(self.page_listagens)
         self.tableV_listaSocios.setObjectName(u"tableV_listaSocios")
-
-        self.verticalLayout_3.addWidget(self.tableV_listaSocios)
+        self.hlayout_listagens = QHBoxLayout()
+        self.hlayout_listagens.addWidget(self.tableV_listaSocios)
+        self.verticalLayout_3.addLayout(self.hlayout_listagens)
 
         self.stackedWidget.addWidget(self.page_listagens)
 

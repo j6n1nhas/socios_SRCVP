@@ -111,6 +111,8 @@ class Sociedade(QMainWindow, Ui_MainWindow):
         self.atual_widget = self.page_listagens
         self.lineE_filtroSocios.textChanged.connect(self.atualizar_listagem)
         self.tableV_listaSocios.resizeColumnsToContents()
+        p1 = QPushButton("Carrega-me")
+        self.hlayout_listagens.addWidget(p1)
 
     def atualizar_listagem(self, string):
         """
@@ -122,16 +124,22 @@ class Sociedade(QMainWindow, Ui_MainWindow):
         self.model.setFilter(filtro_str)
 
     def abrir_editar_socio(self):
-        model = QSqlTableModel(db=self.db)
-        model.setTable("Socio")
-        model.select()
-        mapper = QDataWidgetMapper()
-        mapper.setModel(model)
-        tabela = QTableView()
-        tabela.setModel(model)
-        self.page_2.setLayout(QHBoxLayout())
-        self.page_2.layout().addWidget(tabela)
-        self.stackedWidget.setCurrentIndex(2)
+        query = QSqlQuery("SELECT * FROM Socio WHERE id=2", db=self.db)
+        query.first()
+        socio = dict()
+        socio['id'] = query.value(0)
+        socio['nome'] = query.value(1)
+        socio['morada'] = query.value(2)
+        socio['localidade'] = query.value(3)
+        socio['nif'] = query.value(5)
+        socio['contacto'] = query.value(6)
+        socio['ultima_cota_paga'] = query.value(7)
+        socio['data_admissao'] = query.value(8)
+        socio['ativo'] = query.value(9)
+        socio['notas'] = query.value(10)
+        socio['cota'] = query.value(11)
+        novo_socio = Ui_janela_novoSocio(db=self.db, socio=socio)
+        novo_socio.exec()
 
     def abrir_criar_novo_socio(self):
         novo_socio_code = Ui_janela_novoSocio(db=self.db)

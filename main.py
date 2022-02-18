@@ -136,73 +136,13 @@ class Sociedade(QMainWindow, Ui_MainWindow):
     def abrir_criar_novo_socio(self):
         novo_socio_code = Ui_janela_novoSocio(db=self.db)
         novo_socio_code.setModal(True)
-        # Preencher a comboB_cota com as cotas existentes na base de dados
-        query_cotas = QSqlQuery("SELECT * FROM Cota", db=self.db)
-        while query_cotas.next():
-            novo_socio_code.comboB_cota.addItem(
-                str(query_cotas.value("nome")) + " - " + str(query_cotas.value("valor")) + "€"
-            )
-
-        # Descobrir o próximo número de sócio e adicionar ao formulário
-        query_cotas = QSqlQuery("SELECT seq FROM sqlite_sequence WHERE name = 'Socio'", db=self.db)
-        model = QSqlQueryModel()
-        model.setQuery(query_cotas)
-        next_id = model.data(model.index(0, 0)) + 1
-        novo_socio_code.spinB_numero.setValue(next_id)
-
+        socio = QSqlQuery("SELECT * FROM Socio WHERE id = :id", self.db)
+        socio.bindValue(":id", 2)
+        socio.exec()
+        print(socio)
         # Se a opção for gravar um novo sócio
         if novo_socio_code.exec():
-            query = QSqlQuery(db=self.db)
-            query.prepare(
-                "INSERT INTO Socio ("
-                "nome, morada, localidade, nif, contacto, ultima_cota_paga, data_admissao, ativo, notas, cota"
-                ") "
-                "VALUES ("
-                ":nome, :morada, :localidade, :nif, :contacto, :ultima_cota_paga, :data_admissao, :ativo, :notas, :cota"
-                ")"
-            )
-            query.bindValue(":nome", novo_socio_code.lineE_nome.text() or None)
-            query.bindValue(":morada", novo_socio_code.lineE_morada.text())
-            query.bindValue(":localidade", novo_socio_code.lineE_localidade.text())
-            query.bindValue(":nif", novo_socio_code.lineE_nif.text())
-            query.bindValue(":contacto", novo_socio_code.lineE_contacto.text())
-            query.bindValue(":ultima_cota_paga", novo_socio_code.calendarWidget.selectedDate().toPython().strftime("%m/%Y"))
-            query.bindValue(":data_admissao", novo_socio_code.calendarWidget.selectedDate().toPython().strftime("%d/%m/%Y"))
-            if novo_socio_code.checkB_ativo.isChecked():
-                query.bindValue(":ativo", 1)
-            else:
-                query.bindValue(":ativo", 0)
-            query.bindValue(":notas", novo_socio_code.textE_notas.toPlainText())
-            nome_da_cota = novo_socio_code.comboB_cota.currentText().split(' - ')[0]
-            query_cotas = QSqlQuery("SELECT id FROM Cota WHERE nome LIKE '%{}%'".format(nome_da_cota), db=self.db)
-            model.setQuery(query_cotas)
-            cota_id = model.data(model.index(0, 0))
-            query.bindValue(":cota", cota_id)
-            self.socio_atual = {
-                'id': next_id,
-                'nome': novo_socio_code.lineE_nome.text() or None,
-                'morada': novo_socio_code.lineE_morada.text(),
-                'localidade': novo_socio_code.lineE_localidade.text(),
-                'nif': novo_socio_code.lineE_nif.text(),
-                'contacto': novo_socio_code.lineE_contacto.text(),
-                'ultima_cota_paga': novo_socio_code.calendarWidget.selectedDate().toPython().strftime("%m/%Y"),
-                'data_admissao': novo_socio_code.calendarWidget.selectedDate().toPython().strftime("%d/%m/%Y"),
-                'ativo': novo_socio_code.checkB_ativo.isChecked(),
-                'cota': cota_id,
-            }
-            print(self.socio_atual)
-            try:
-                query.exec()
-                if query.lastError():
-                    raise IndexError
-                print(self.socio_atual)
-            except IndexError:
-                message = QMessageBox(novo_socio_code)
-                message.setWindowTitle("Adicionar novo sócio")
-                message.setText("O nome do sócio não pode ficar em branco")
-                message.setIcon(QMessageBox.Icon.Critical)
-                novo_socio_code.hide()
-                message.exec()
+            pass
         else:
             del novo_socio_code
 

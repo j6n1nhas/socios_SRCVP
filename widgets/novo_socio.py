@@ -13,7 +13,9 @@ from PySide6.QtGui import (QFont, QIcon)
 from PySide6.QtWidgets import (QCalendarWidget, QCheckBox, QComboBox, QDialogButtonBox, QFormLayout, QHBoxLayout,
                                QDialog, QLabel, QLayout, QLineEdit, QSpinBox, QTextEdit, QVBoxLayout, QWidget,
                                QMessageBox, )
-from PySide6.QtSql import (QSqlDatabase, QSqlQuery)
+from PySide6.QtSql import (QSqlQuery, QSqlQueryModel)
+
+from datetime import datetime
 
 
 class Ui_janela_novoSocio(QDialog):
@@ -24,11 +26,49 @@ class Ui_janela_novoSocio(QDialog):
         self.socio = socio
         self.db = db
         self.build_slots()
+
+        # Preencher a comboB_cota com as cotas existentes na base de dados
+        query_cotas = QSqlQuery("SELECT * FROM Cota", db=self.db)
+        while query_cotas.next():
+            self.comboB_cota.addItem(
+                str(query_cotas.value("nome")) + " - " + str(query_cotas.value("valor")) + "€"
+            )
+
         if self.socio is not None:
-            self.preencher_dados_socio(self.socio)
+            self.preencher_dados_socio()
+        else:
+            # Descobrir o próximo número de sócio e adicionar ao formulário
+            query_cotas = QSqlQuery("SELECT seq FROM sqlite_sequence WHERE name = 'Socio'", db=self.db)
+            model = QSqlQueryModel()
+            model.setQuery(query_cotas)
+            next_id = model.data(model.index(0, 0)) + 1
+            self.spinB_numero.setValue(next_id)
+
 
     def validar_socio(self, socio):
         pass
+
+    def parse_data(self):
+        if self.socio is None:
+            self.socio = dict()
+        self.socio['id'] = self.spinB_numero.value()
+        self.socio['nome'] = self.lineE_nome.text() or None
+        self.socio['morada'] = self.lineE_morada.text()
+        self.socio['localidade'] = self.lineE_localidade.text()
+        self.socio['nif'] = self.lineE_nif.text()
+        self.socio['contacto'] = self.lineE_contacto.text()
+        self.socio['ultima_cota_paga'] = self.calendarWidget.selectedDate().toPython().strftime("%m/%Y")
+        self.socio['data_admissao'] = self.calendarWidget.selectedDate().toPython().strftime("%d/%m/%Y")
+        if self.checkB_ativo.isChecked():
+            self.socio['ativo'] = 1
+        else:
+            self.socio['ativo'] = 0
+        self.socio['notas'] = self.textE_notas.toPlainText()
+        nome_da_cota = self.comboB_cota.currentText().split(' - ')[0]
+        query_cotas = QSqlQuery("SELECT id FROM Cota WHERE nome LIKE '%{}%'".format(nome_da_cota), db=self.db)
+        query_cotas.first()
+        cota_id = query_cotas.value(0)
+        self.socio['cota'] = cota_id
 
     def build_slots(self):
         self.spinB_numero.valueChanged.connect(self.check_num_socio)
@@ -239,16 +279,54 @@ class Ui_janela_novoSocio(QDialog):
         self.label_numero.setText(QCoreApplication.translate("janela_novoSocio", u"N\u00famero: ", None))
     # retranslateUi
 
-    def preencher_dados_socio(self, socio=None):
-        if socio is not None:
-            self.lineE_nome.setText(self.socio['nome'])
-            self.lineE_morada.setText(self.socio['morada'])
-            self.lineE_localidade.setText(self.socio['localidade'])
+    def preencher_dados_socio(self):
+        self.spinB_numero.setValue(self.socio['id'])
+        self.lineE_nome.setText(self.socio['nome'])
+        self.lineE_morada.setText(self.socio['morada'])
+        self.lineE_localidade.setText(self.socio['localidade'])
+        self.lineE_nif.setText(self.socio['nif'])
+        self.lineE_contacto.setText(self.socio['contacto'])
+        self.calendarWidget.selectedDate().fromString(self.socio['data_admissao'], "%d/%m/%Y")
+
+    def save_database(self):
+        query = QSqlQuery(db=self.db)
+        query.prepare(
+            "INSERT INTO Socio ("
+            "nome, morada, localidade, nif, contacto, ultima_cota_paga, data_admissao, ativo, notas, cota"
+            ") "
+            "VALUES ("
+            ":nome, :morada, :localidade, :nif, :contacto, :ultima_cota_paga, :data_admissao, :ativo, :notas, :cota"
+            ")"
+        )
+        query.bindValue(":nome", self.socio['nome'])
+        query.bindValue(":morada", self.socio['morada'])
+        query.bindValue(":localidade", self.socio['localidade'])
+        query.bindValue(":nif", self.socio['nif'])
+        query.bindValue(":contacto", self.socio['contacto'])
+        query.bindValue(":ultima_cota_paga", self.socio['ultima_cota_paga'])
+        query.bindValue(":data_admissao", self.socio['data_admissao'])
+        query.bindValue(":ativo", self.socio['ativo'])
+        query.bindValue(":notas", self.socio['notas'])
+        query.bindValue(":cota", self.socio['cota'])
+        try:
+            query.exec()
+            if query.lastError():
+                raise IndexError
+            return True
+        except IndexError:
+            message = QMessageBox(self)
+            message.setWindowTitle("Adicionar novo sócio")
+            message.setText("O nome do sócio não pode ficar em branco")
+            message.setIcon(QMessageBox.Icon.Critical)
+            message.exec()
+            return False
 
     def accept(self) -> None:
         print("Janela aceite")
+        self.parse_data()
         print(self.socio)
-        super(Ui_janela_novoSocio, self).accept()
+        if self.save_database():
+            super(Ui_janela_novoSocio, self).accept()
 
     def reject(self) -> None:
         print("Janela rejeitada")
@@ -256,6 +334,7 @@ class Ui_janela_novoSocio(QDialog):
         message.setWindowTitle("Novo Sócio - SRCVP")
         message.setText("Pretende descartar dados do sócio?")
         message.setInformativeText("Se escolher Ok, vai perder os dados já inseridos")
+        message.setIcon(QMessageBox.Icon.Warning)
         message.setStandardButtons(QMessageBox.StandardButton.Ok | QMessageBox.StandardButton.Cancel)
         resposta = message.exec()
         if resposta == QMessageBox.StandardButton.Ok:

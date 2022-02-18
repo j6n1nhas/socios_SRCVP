@@ -139,12 +139,9 @@ class Sociedade(QMainWindow, Ui_MainWindow):
         socio = QSqlQuery("SELECT * FROM Socio WHERE id = :id", self.db)
         socio.bindValue(":id", 2)
         socio.exec()
-        print(socio)
         # Se a opção for gravar um novo sócio
-        if novo_socio_code.exec():
-            pass
-        else:
-            del novo_socio_code
+        resultado = novo_socio_code.exec()
+        print(resultado)
 
 
 if __name__ == '__main__':

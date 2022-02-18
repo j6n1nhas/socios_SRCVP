@@ -12,10 +12,10 @@ from PySide6.QtCore import (QCoreApplication, QLocale, QMetaObject, QSize, Qt)
 from PySide6.QtGui import (QFont, QIcon)
 from PySide6.QtWidgets import (QCalendarWidget, QCheckBox, QComboBox, QDialogButtonBox, QFormLayout, QHBoxLayout,
                                QDialog, QLabel, QLayout, QLineEdit, QSpinBox, QTextEdit, QVBoxLayout, QWidget,
-                               QMessageBox, )
-from PySide6.QtSql import (QSqlQuery, QSqlQueryModel)
+                               QMessageBox, QTableView, )
+from PySide6.QtSql import (QSqlQuery, QSqlQueryModel, QSqlRelationalTableModel, QSqlRelation)
 
-from datetime import datetime
+from database.database_model import my_model
 
 
 class Ui_janela_novoSocio(QDialog):
@@ -43,10 +43,6 @@ class Ui_janela_novoSocio(QDialog):
             model.setQuery(query_cotas)
             next_id = model.data(model.index(0, 0)) + 1
             self.spinB_numero.setValue(next_id)
-
-
-    def validar_socio(self, socio):
-        pass
 
     def parse_data(self):
         if self.socio is None:
@@ -250,13 +246,9 @@ class Ui_janela_novoSocio(QDialog):
         QWidget.setTabOrder(self.checkB_ativo, self.spinB_numero)
 
         self.retranslateUi(janela_novoSocio)
-        self.lineE_nome.textChanged.connect(self.update_fields)
 
         QMetaObject.connectSlotsByName(janela_novoSocio)
     # setupUi
-
-    def update_fields(self, text):
-        self.socio['nome'] = text
 
     def retranslateUi(self, janela_novoSocio):
         janela_novoSocio.setWindowTitle(QCoreApplication.translate("janela_novoSocio", u"Novo s\u00f3cio - SRCVP", None))
@@ -292,12 +284,13 @@ class Ui_janela_novoSocio(QDialog):
         query = QSqlQuery(db=self.db)
         query.prepare(
             "INSERT INTO Socio ("
-            "nome, morada, localidade, nif, contacto, ultima_cota_paga, data_admissao, ativo, notas, cota"
+            "id, nome, morada, localidade, nif, contacto, ultima_cota_paga, data_admissao, ativo, notas, cota"
             ") "
             "VALUES ("
-            ":nome, :morada, :localidade, :nif, :contacto, :ultima_cota_paga, :data_admissao, :ativo, :notas, :cota"
-            ")"
+            ":id, :nome, :morada, :localidade, :nif, :contacto, :ultima_cota_paga, :data_admissao, :ativo, :notas,"
+            ":cota)"
         )
+        query.bindValue(":id", self.socio['id'])
         query.bindValue(":nome", self.socio['nome'])
         query.bindValue(":morada", self.socio['morada'])
         query.bindValue(":localidade", self.socio['localidade'])
@@ -310,26 +303,29 @@ class Ui_janela_novoSocio(QDialog):
         query.bindValue(":cota", self.socio['cota'])
         try:
             query.exec()
-            if query.lastError():
-                raise IndexError
+            if query.lastError().text() != '':
+                raise IndexError(query.lastError().nativeErrorCode())
             return True
-        except IndexError:
+        except IndexError as e:
+            if e.args[0] == '1299':
+                mensagem = 'O nome do sócio não pode ficar em branco'
+            elif e.args[0] == '1555':
+                mensagem = 'O número de sócio já existe, tem de escolher outro'
+            else:
+                mensagem = 'Ocorreu um erro a gravar o sócio na base de dados'
             message = QMessageBox(self)
-            message.setWindowTitle("Adicionar novo sócio")
-            message.setText("O nome do sócio não pode ficar em branco")
+            message.setWindowTitle("Novo Sócio - SRCVP")
+            message.setText(mensagem)
             message.setIcon(QMessageBox.Icon.Critical)
             message.exec()
             return False
 
     def accept(self) -> None:
-        print("Janela aceite")
         self.parse_data()
-        print(self.socio)
         if self.save_database():
             super(Ui_janela_novoSocio, self).accept()
 
     def reject(self) -> None:
-        print("Janela rejeitada")
         message = QMessageBox(self)
         message.setWindowTitle("Novo Sócio - SRCVP")
         message.setText("Pretende descartar dados do sócio?")
